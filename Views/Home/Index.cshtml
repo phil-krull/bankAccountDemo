@@ -1,0 +1,46 @@
+﻿@model IndexView
+<div class="row text-white">
+    <div class="col-4 d-flex align-items-center m-0">
+        <h1 class="mb-0">Welcome, @Model.User.FirstName @Model.User.LastName</h1>
+    </div>
+    <div class="col-4 offset-4 d-flex align-items-center">
+        <p class="mb-0">Current balance: <span class="border px-5 py-2">$@Model.User.Transactions.Sum(transaction => transaction.Amount)</span></p>
+    </div>
+    <div class="row mt-2">
+        <form action="/logout" method="post">
+            <button class="btn btn-sm btn-warning">Logout</button>
+        </form>
+    </div>
+</div>
+<div class="row mt-5 mb-3 text-white">
+    <form action="/transaction" method="post" class="form-inline">
+        <label class="mr-4 ml-3" asp-for="Transaction.Amount"></label>
+        <input asp-for="Transaction.Amount" class="form-control-sm mr-sm-5">
+        <button class="btn btn-sm btn-info ml-5">Submit</button>
+    </form>
+</div>
+        <div class="row">
+            <div class="offset-2">
+                <span class="text-danger" asp-validation-for="Transaction.Amount"></span>
+            </div>
+        </div>
+<div class="row text-white mt-3">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{foreach(Transaction t in Model.User.Transactions)
+                {
+                    <tr>
+                        <td>$@t.Amount</td>
+                        <td>@t.CreatedAt.Date.ToString("MMM dd, yyyy")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
